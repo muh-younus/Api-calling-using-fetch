@@ -6,9 +6,41 @@ import { Card } from "primereact/card"
 import "../index.css"
 
 const ApiCalling = () => {
+
   const [news, setNews] = useState([])
   const [loading, setLoading] = useState(false)
-  const [card, setCard] = useState(1)
+  const [page, setPage] = useState(0)
+
+  //Next and Prev button Logic  
+
+  const itemPerPage = 6;//show 6 items
+  //Apply slicing
+  const startIndex = page * itemPerPage;
+  const currentNews = news.slice(startIndex, startIndex + itemPerPage);
+
+  //button
+
+  const handleNext = () =>{
+
+    if((startIndex + itemPerPage) < news.length){
+
+      setPage(page +1);
+
+    }
+    console.log("current news",currentNews);
+
+  }
+  const handlePrev = () =>{
+
+    if((page > 0)){
+
+      setPage(page -1);
+
+    }
+    console.log("current news",currentNews);
+
+  }
+  
 
 
   const contextValue = useGlobalContext()
@@ -50,7 +82,7 @@ const ApiCalling = () => {
         </button>
       ) : (
         <div className="grid grid-cols-3 gap-5 p-5">
-          {news.slice(0,6).map((item) => (
+          {currentNews.map((item) => (
             <div key={item.objectID} className="w-[370px] h-[200px] hover:scale-105 transition-transform overflow-hidden">
               <Card title={item.author}>
                 <p className="m-0">{item.story_title}</p>
@@ -59,8 +91,12 @@ const ApiCalling = () => {
               </Card>
             </div>
           ))}
-
-          <button>Next</button>
+          
+          {/* button-section */}
+          <div className="flex justify-center gap-3 mt-5 w-full m-auto">
+          <button className="rounded-2 bg-blue-500 text-white px-4 py-2" onClick={handlePrev}>Prev</button>
+          <button className="rounded-2 bg-blue-500 text-white px-4 py-2" onClick={handleNext}>Next</button>
+          </div>
         </div>
       )}
     </div>
