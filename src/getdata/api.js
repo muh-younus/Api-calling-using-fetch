@@ -1,33 +1,64 @@
-import { useEffect } from "react";
-import {useGlobalContext} from "./context";
+"use client"
+
+import { useEffect, useState } from "react"
+import { useGlobalContext } from "./context"
+import { Card } from "primereact/card"
+import "../index.css"
 
 const ApiCalling = () => {
+  const [news, setNews] = useState([])
+  const [loading, setLoading] = useState(false)
+  const contextValue = useGlobalContext()
+  const url = "https://hn.algolia.com/api/v1/search_by_date?query=html"
 
-    const contextValue = useGlobalContext();
-  const url = "https://hn.algolia.com/api/v1/search_by_date?search?html";
-
-  //using fetch function to get data from API
+  // using fetch function to get data from API
   const fetchData = async (api) => {
+    setLoading(true) // ✅ start loading
     try {
-      const res = await fetch(api);
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      const res = await fetch(api)
+      const data = await res.json()
+      console.log("The response is: ", data)
 
-  //calling function using useeffect
+      setNews(data.hits)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false) // ✅ stop loading
+    }
+  }
+
+  // calling function using useEffect
   useEffect(() => {
-    fetchData(url);
-  }, []);
+    fetchData(url)
+  }, [])
+
+  console.log("The news data is: ", news)
 
   return (
-    <>
-      <h2>ApiCalling</h2>
-      <h2>{contextValue}</h2>
-    </>
-  );
-};
+    <div className="flex p-3 flex-col items-center text-yellow-500 justify-center min-h-screen bg-gray-100 dark:bg-gray-900 overflow-x-hidden">
+      {loading ? (
+        // ✅ Loading Spinner
+        <button type="button" className="bg-indigo-500 text-white px-4 py-2 rounded flex items-center" disabled>
+          <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M12 2a10 10 0 100 20 10 10 0 000-20z"></path>
+          </svg>
+          Processing...
+        </button>
+      ) : (
+        <div className="grid grid-cols-3 gap-4">
+          {news.map((item) => (
+            <div key={item.objectID} className="w-[400px]">
+              <Card title={item.author}>
+                <p className="m-0">{item.story_title}</p>
+                <p className="m-0 flex justify-end">StoryID: {item._tags?.[2]}</p>
+              </Card>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
-export default ApiCalling;
+export default ApiCalling

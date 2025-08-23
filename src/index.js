@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {AppProvider,AppContext}  from "./getdata/context.js";
+import 'primereact/resources/themes/lara-light-blue/theme.css'; // theme
+import 'primereact/resources/primereact.min.css';              // core
+import 'primeicons/primeicons.css';  
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
