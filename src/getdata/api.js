@@ -8,6 +8,9 @@ import "../index.css"
 const ApiCalling = () => {
   const [news, setNews] = useState([])
   const [loading, setLoading] = useState(false)
+  const [card, setCard] = useState(1)
+
+
   const contextValue = useGlobalContext()
   const url = "https://hn.algolia.com/api/v1/search_by_date?query=html"
 
@@ -46,15 +49,18 @@ const ApiCalling = () => {
           Processing...
         </button>
       ) : (
-        <div className="grid grid-cols-3 gap-4">
-          {news.map((item) => (
-            <div key={item.objectID} className="w-[400px]">
+        <div className="grid grid-cols-3 gap-5 p-5">
+          {news.slice(0,6).map((item) => (
+            <div key={item.objectID} className="w-[370px] h-[200px] hover:scale-105 transition-transform overflow-hidden">
               <Card title={item.author}>
                 <p className="m-0">{item.story_title}</p>
                 <p className="m-0 flex justify-end">StoryID: {item._tags?.[2]}</p>
+                <p className="m-0 text-blue-300"><a href="#">{item.created_at_i}</a></p>
               </Card>
             </div>
           ))}
+
+          <button>Next</button>
         </div>
       )}
     </div>
