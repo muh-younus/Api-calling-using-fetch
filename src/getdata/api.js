@@ -87,7 +87,9 @@ const ApiCalling = () => {
       ) : (
         <div className="text-center">
           <h1 className="text-2xl font-bold text-black m-auto">
+            
             Hacker News{" "}
+            <span className="text-[10px] align">{page}</span>
             <span className="text-[10px] align-super">{news.length}</span>
           </h1>
 
