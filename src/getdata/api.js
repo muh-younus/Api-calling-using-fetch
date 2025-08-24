@@ -85,15 +85,25 @@ const ApiCalling = () => {
           Processing...
         </button>
       ) : (
-        <div>
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-black m-auto">
+            Hacker News{" "}
+            <span className="text-[10px] align-super">{news.length}</span>
+          </h1>
+
           <div className="grid grid-cols-3 gap-5 p-5">
             {currentNews.map((item) => (
               <div
                 key={item.objectID}
-                className="w-[370px] h-[200px] hover:scale-105 transition-transform overflow-hidden"
+                className="w-[370px] h-[200px] hover:scale-105 transition-transform overflow-hidden shadow-2xl"
               >
-                <Card title={item.author}>
-                  <p className="m-0">{item.story_title}</p>
+                <Card
+                  className="h-full bg-white dark:bg-yellow-200 p-4 rounded-lg "
+                  title={item.author}
+                >
+                  <p className="m-0 truncate whitespace-nowrap">
+                    {item.story_title}
+                  </p>
                   <p className="m-0 flex justify-end">
                     StoryID: {item._tags?.[2]}
                   </p>
@@ -103,8 +113,6 @@ const ApiCalling = () => {
                 </Card>
               </div>
             ))}
-
-            {/* button-section */}
           </div>
 
           {/* Start -button-section */}
@@ -115,6 +123,7 @@ const ApiCalling = () => {
             >
               Prev
             </button>
+
             <button
               className="rounded-lg bg-blue-500 text-white px-4 py-2"
               onClick={handleNext}
